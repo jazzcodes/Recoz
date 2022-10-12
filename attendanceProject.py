@@ -3,6 +3,14 @@ import numpy as np
 import face_recognition
 import os
 from datetime import datetime
+
+import my_speech
+import pyttsx3
+
+text_speech_2=pyttsx3.init()
+my_speech.Recoz_speech()
+
+
 path = 'TrainingImageLabel'
 images = []
 classNames = []
@@ -29,11 +37,17 @@ def markAttendance(name):
         for line in myDataList:
             entry = line.split(',')
             nameList.append(entry[0])
+            # text_speech_2.say(entry[0])
+            # text_speech_2.runAndWait()
 
         if name not in nameList:
             now = datetime.now()
             dtString = now.strftime('%H:%M:%S')
             f.writelines(f'\n{name},{dtString}')
+            text_speech_2.say(name)
+            att="Your attendance has been marked"
+            text_speech_2.say(att)
+            text_speech_2.runAndWait()
 
 
 encodeListKnown = findEncodings(images)
@@ -67,5 +81,4 @@ while True:
 
     cv2.imshow('webcam', img)
     cv2.waitKey(1)
-
 
